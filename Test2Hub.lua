@@ -1,57 +1,44 @@
--- Tạo GUI chính
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.IgnoreGuiInset = true
-local Players = game:GetService("Players")
-local Player = Players.LocalPlayer
 
--- Khung ảnh nền ban đầu
-local ImageFrame = Instance.new("ImageLabel", ScreenGui)
-ImageFrame.Size = UDim2.new(1, 0, 1, 0)
-ImageFrame.BackgroundTransparency = 1
-ImageFrame.Image = "rbxassetid://118502927291477"
-ImageFrame.ScaleType = Enum.ScaleType.Fit
+-- Vùng đen bao trọn nửa trên màn hình
+local BlackFrame = Instance.new("Frame", ScreenGui)
+BlackFrame.Size = UDim2.new(1, 0, 0.5, 0)
+BlackFrame.Position = UDim2.new(0, 0, 0, 0)
+BlackFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 
-local StatusText = Instance.new("TextLabel", ImageFrame)
-StatusText.Size = UDim2.new(1, 0, 1, 0)
-StatusText.TextColor3 = Color3.fromRGB(255, 255, 255)
-StatusText.TextSize = 40
-StatusText.Font = Enum.Font.GothamBold
+-- Chữ "Đang Tải Dữ Liệu" (Đã kéo xích lên vị trí mong muốn)
+local StatusText = Instance.new("TextLabel", BlackFrame)
+StatusText.Size = UDim2.new(1, 0, 0.2, 0)
+StatusText.Position = UDim2.new(0, 0, 0.3, 0)
+StatusText.BackgroundTransparency = 1
 StatusText.Text = "Đang Tải Dữ Liệu"
+StatusText.TextColor3 = Color3.fromRGB(255, 255, 255)
+StatusText.TextSize = 30
+StatusText.Font = Enum.Font.GothamBold
 
-wait(3)
-StatusText.Text = "Sắp Thành Công"
-wait(2)
-
--- Thông báo dồn dập
-local Notification = game:GetService("StarterGui")
-Notification:SetCore("SendNotification", {Title = "Tau Hu Hub", Text = "Hãy chờ thêm 3s", Duration = 2})
-wait(1)
-Notification:SetCore("SendNotification", {Title = "Tau Hu Hub", Text = "Xin lỗi Tau Hu Hub đang bị Delay", Duration = 2})
-wait(1)
-Notification:SetCore("SendNotification", {Title = "Tau Hu Hub", Text = "Thành công", Duration = 2})
-
-StatusText.Text = "Thành Công"
-wait(2)
-
--- Đếm ngược và Reset liên tục
-for i = 3, 1, -1 do
-    StatusText.Text = tostring(i)
-    -- Ép nhân vật reset liên tục trong lúc đếm
-    spawn(function()
-        if Player.Character and Player.Character:FindFirstChild("Humanoid") then
-            Player.Character.Humanoid.Health = 0
-        end
-    end)
-    wait(1)
+-- Tạo 2 nút
+local function CreateButton(text, pos, color)
+    local btn = Instance.new("TextButton", BlackFrame)
+    btn.Size = UDim2.new(0, 150, 0, 50)
+    btn.Position = pos
+    btn.BackgroundColor3 = color
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", btn)
+    return btn
 end
 
--- Hiện ảnh kinh dị full màn hình
-local ScaryImage = Instance.new("ImageLabel", ScreenGui)
-ScaryImage.Size = UDim2.new(1, 0, 1, 0)
-ScaryImage.Image = "rbxassetid://1200000001" -- THAY ID ẢNH KINH DỊ VÀO ĐÂY
-ScaryImage.ZIndex = 10
-StatusText.Visible = false -- Ẩn chữ
+local btnKichHoat = CreateButton("Kích Hoạt", UDim2.new(0.3, -75, 0.6, 0), Color3.fromRGB(255, 50, 50))
+local btnThoat = CreateButton("Thoát", UDim2.new(0.7, -75, 0.6, 0), Color3.fromRGB(50, 200, 50))
 
--- Giữ ảnh hiện 2s rồi Kick
-wait(2)
-Player:Kick("\n[Tau Hu Security] \nLỗi: 267 \nTao Nói Rồi Thằng Cặc Bé")
+-- Logic nút
+btnKichHoat.MouseButton1Click:Connect(function()
+    game:GetService("Players").LocalPlayer:Kick("\n[Tau Hu Security] \nLỗi: 267 \nMua Prenium mà chơi t, Thằng Nhà Nghèo")
+end)
+
+btnThoat.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
