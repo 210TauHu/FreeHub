@@ -1,9 +1,10 @@
- while true do
-	wait(0.25)
+ -- Hiển thị thông báo (thông qua chat hoặc script notification)
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Thông báo",
+    Text = "Ngu Thì Chịu",
+    Duration = 3
+})
 
-	for _, player in pairs(game.Players:GetPlayers()) do
-		if player.Character and player.Character:FindFirstChild("Humanoid") then
-			player.Character.Humanoid.Health = 0
-		end
-	end
-end
+-- Đợi 3 giây để thông báo kịp hiện rồi thoát game
+wait(3)
+game:GetService("Players").LocalPlayer:Kick("Ngu Thì Chịu")
