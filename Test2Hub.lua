@@ -3,7 +3,7 @@ local sg = Instance.new("ScreenGui", game.CoreGui)
 -- 1. NÚT OPEN HÌNH TRÒN NHỎ (Để bấm HIỆN UI)
 local openBtn = Instance.new("TextButton", sg)
 openBtn.Size = UDim2.new(0, 45, 0, 45)
-openBtn.Position = UDim2.new(0, 15, 0, 55) -- Vị trí góc trái, né nút mặc định của Roblox
+openBtn.Position = UDim2.new(0, 15, 0, 55)
 openBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 openBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 openBtn.Text = "Open"
@@ -27,7 +27,7 @@ main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 main.BorderSizePixel = 0
 main.Active = true
 main.Draggable = true
-main.Visible = true -- Mặc định ban đầu mới chạy sẽ hiện
+main.Visible = true 
 
 local mainStroke = Instance.new("UIStroke", main)
 mainStroke.Color = Color3.fromRGB(40, 40, 40)
@@ -52,9 +52,9 @@ title.TextXAlignment = Enum.TextXAlignment.Left
 -- NÚT X ĐỂ ẨN UI (Nằm góc phải thanh topBar)
 local closeBtn = Instance.new("TextButton", topBar)
 closeBtn.Size = UDim2.new(0, 30, 0, 30)
-closeBtn.Position = UDim2.new(1, -30, 0, 0) -- Ép sát góc phải
+closeBtn.Position = UDim2.new(1, -30, 0, 0)
 closeBtn.BackgroundTransparency = 1
-closeBtn.TextColor3 = Color3.fromRGB(255, 50, 50) -- Màu đỏ chữ X
+closeBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
 closeBtn.Text = "X"
 closeBtn.Font = Enum.Font.SourceSansBold
 closeBtn.TextSize = 18
@@ -102,7 +102,7 @@ for i, name in ipairs(tabNames) do
     end)
 end
 
--- Nội dung hiển thị chữ mẫu ở trang Home
+-- [NỘI DUNG TRANG HOME]
 local homeTxt = Instance.new("TextLabel", pages["Home"])
 homeTxt.Size = UDim2.new(1, 0, 1, 0)
 homeTxt.BackgroundTransparency = 1
@@ -111,17 +111,36 @@ homeTxt.Text = "Trang Home"
 homeTxt.Font = Enum.Font.SourceSansBold
 homeTxt.TextSize = 16
 
--- ==========================================
--- CƠ CHẾ ĐIỀU KHIỂN ĐÚNG Ý BẠN:
 
--- 1. ẤN OPEN THÌ HIỆN UI
-openBtn.MouseButton1Click:Connect(function()
-    main.Visible = true
-end)
+-- ==========================================================
+-- [NỘI DUNG TRANG GAME - TÍNH NĂNG FLY CHỈNH TỐC ĐỘ]
+local gamePage = pages["Game"]
 
--- 2. ẤN DẤU X THÌ ẨN UI
-closeBtn.MouseButton1Click:Connect(function()
-    main.Visible = false
-end)
--- ==========================================
+-- Ô Nhập Tốc Độ Bay (TextBox)
+local speedInput = Instance.new("TextBox", gamePage)
+speedInput.Size = UDim2.new(0, 200, 0, 30)
+speedInput.Position = UDim2.new(0.5, -100, 0.15, 0)
+speedInput.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+speedInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+speedInput.Text = "50" -- Tốc độ bay mặc định
+speedInput.PlaceholderText = "Nhập tốc độ bay..."
+speedInput.Font = Enum.Font.SourceSans
+speedInput.TextSize = 14
 
+local speedCorner = Instance.new("UICorner", speedInput)
+speedCorner.CornerRadius = UDim.new(0, 4)
+
+local speedLabel = Instance.new("TextLabel", gamePage)
+speedLabel.Size = UDim2.new(0, 200, 0, 20)
+speedLabel.Position = UDim2.new(0.5, -100, 0, 0)
+speedLabel.BackgroundTransparency = 1
+speedLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+speedLabel.Text = "Tốc độ bay (Speed):"
+speedLabel.Font = Enum.Font.SourceSansBold
+speedLabel.TextSize = 12
+
+-- Nút Bật Bay (Fly Button)
+local flyBtn = Instance.new("TextButton", gamePage)
+flyBtn.Size = UDim2.new(0, 95, 0, 35)
+flyBtn.Position = UDim2.new(0.5, -100, 0.45, 0)
+ 
