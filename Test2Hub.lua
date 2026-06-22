@@ -1,1 +1,2 @@
-print( có cái lồn )
+print("Hello Cái Lồn!"
+
