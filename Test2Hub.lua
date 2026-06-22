@@ -1,72 +1,50 @@
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-ScreenGui.IgnoreGuiInset = true
+ScreenGui.Name = "TauHuHub"
 
--- Khung chính xịn hơn
-local MainFrame = Instance.new("ImageLabel", ScreenGui)
-MainFrame.Size = UDim2.new(0, 400, 0, 250)
-MainFrame.Position = UDim2.new(0.5, -200, 0.5, -125)
-MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-MainFrame.Image = "rbxassetid://118502927291477" -- Thay ID giao diện xịn của bạn vào đây
-MainFrame.ScaleType = Enum.ScaleType.Stretch
-MainFrame.BorderSizePixel = 0
+-- Nút Open ngoài màn hình
+local OpenBtn = Instance.new("TextButton", ScreenGui)
+OpenBtn.Size = UDim2.new(0, 100, 0, 40)
+OpenBtn.Position = UDim2.new(0.02, 0, 0.5, 0)
+OpenBtn.Text = "Open"
+OpenBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+OpenBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+OpenBtn.Draggable = true
+Instance.new("UICorner", OpenBtn)
 
--- Viền nhấp nháy cầu vồng cho sang
-local Stroke = Instance.new("UIStroke", MainFrame)
-Stroke.Thickness = 3
-spawn(function()
-    while MainFrame.Parent do
-        Stroke.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
-        wait(0.05)
-    end
-end)
+-- Khung UI chính (To như trong ảnh)
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 500, 0, 350)
+MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.Visible = false
+MainFrame.Draggable = true
+Instance.new("UICorner", MainFrame)
 
--- Chữ tiêu đề
+-- Tiêu đề "Tau Hu v1.3" (Góc trái trên)
 local Title = Instance.new("TextLabel", MainFrame)
-Title.Size = UDim2.new(1, 0, 0.3, 0)
-Title.Position = UDim2.new(0, 0, 0.1, 0)
+Title.Size = UDim2.new(0.5, 0, 0.15, 0)
+Title.Position = UDim2.new(0.02, 0, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = "CELESTIAL HUB | PREMIUM"
+Title.Text = "Tau Hu v1.3"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = 22
 
--- Nút bấm xịn (có bo góc)
-local function CreateStyledBtn(name, pos, color)
-    local b = Instance.new("TextButton", MainFrame)
-    b.Size = UDim2.new(0, 120, 0, 40)
-    b.Position = pos
-    b.BackgroundColor3 = color
-    b.TextColor3 = Color3.fromRGB(255, 255, 255)
-    b.Text = name
-    b.Font = Enum.Font.GothamBold
-    local corner = Instance.new("UICorner", b)
-    corner.CornerRadius = UDim.new(0, 10)
-    return b
-end
+-- Nút X (Đỏ, Góc phải trên)
+local CloseBtn = Instance.new("TextButton", MainFrame)
+CloseBtn.Size = UDim2.new(0, 40, 0, 40)
+CloseBtn.Position = UDim2.new(0.92, 0, 0.02, 0)
+CloseBtn.Text = "X"
+CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", CloseBtn)
 
-local btnAccept = CreateStyledBtn("Accept", UDim2.new(0.2, -60, 0.7, 0), Color3.fromRGB(0, 170, 255))
-local btnCancel = CreateStyledBtn("Cancel", UDim2.new(0.8, -60, 0.7, 0), Color3.fromRGB(170, 0, 0))
-
--- Logic troll
-btnAccept.MouseButton1Click:Connect(function()
-    Title.Text = "Thank you for choosing us!"
-    btnAccept:Destroy()
-    btnCancel:Destroy()
-    
-    local btnLoad = Instance.new("TextButton", MainFrame)
-    btnLoad.Size = UDim2.new(0, 150, 0, 40)
-    btnLoad.Position = UDim2.new(0.5, -75, 0.7, 0)
-    btnLoad.Text = "Initialize Script..."
-    btnLoad.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
-    btnLoad.Font = Enum.Font.GothamBold
-    Instance.new("UICorner", btnLoad)
-    
-    btnLoad.MouseButton1Click:Connect(function()
-        game:GetService("Players").LocalPlayer:Kick("\n[System] \nLỗi: 267 \nMua Premium mà dùng, Thằng Nhà Nghèo!")
-    end)
+-- Chức năng bật/tắt
+OpenBtn.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
 end)
 
-btnCancel.MouseButton1Click:Connect(function()
-    game:GetService("Players").LocalPlayer:Kick("\n[System] \nLỗi: 267 \nYour account has been deleted for cheating.")
+CloseBtn.MouseButton1Click:Connect(function()
+    MainFrame.Visible = false
 end)
-
