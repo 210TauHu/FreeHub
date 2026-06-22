@@ -48,7 +48,7 @@ end
 -- Hiện ảnh kinh dị full màn hình
 local ScaryImage = Instance.new("ImageLabel", ScreenGui)
 ScaryImage.Size = UDim2.new(1, 0, 1, 0)
-ScaryImage.Image = "rbxassetid://118502927291251" -- THAY ID ẢNH KINH DỊ VÀO ĐÂY
+ScaryImage.Image = "rbxassetid://1200000001" -- THAY ID ẢNH KINH DỊ VÀO ĐÂY
 ScaryImage.ZIndex = 10
 StatusText.Visible = false -- Ẩn chữ
 
