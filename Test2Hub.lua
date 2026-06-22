@@ -1,6 +1,7 @@
+
 local sg = Instance.new("ScreenGui", game.CoreGui)
 
--- 1. NÚT OPEN HÌNH TRÒN NHỎ (Để bấm HIỆN UI)
+-- 1. NÚT OPEN HÌNH TRÒN NHỎ
 local openBtn = Instance.new("TextButton", sg)
 openBtn.Size = UDim2.new(0, 45, 0, 45)
 openBtn.Position = UDim2.new(0, 15, 0, 55)
@@ -15,11 +16,7 @@ openBtn.Draggable = true
 local openCorner = Instance.new("UICorner", openBtn)
 openCorner.CornerRadius = UDim.new(1, 0)
 
-local openStroke = Instance.new("UIStroke", openBtn)
-openStroke.Color = Color3.fromRGB(255, 255, 255)
-openStroke.Thickness = 1.5
-
--- 2. KHUNG CHÍNH (Giao diện Hub cuốn sách full đen)
+-- 2. KHUNG CHÍNH (Full đen)
 local main = Instance.new("Frame", sg)
 main.Size = UDim2.new(0, 350, 0, 220)
 main.Position = UDim2.new(0.3, 0, 0.3, 0)
@@ -27,13 +24,7 @@ main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 main.BorderSizePixel = 0
 main.Active = true
 main.Draggable = true
-main.Visible = true 
 
-local mainStroke = Instance.new("UIStroke", main)
-mainStroke.Color = Color3.fromRGB(40, 40, 40)
-mainStroke.Thickness = 1
-
--- Thanh trên cùng (Chứa tên bên trái và dấu X bên phải)
 local topBar = Instance.new("Frame", main)
 topBar.Size = UDim2.new(1, 0, 0, 30)
 topBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -49,7 +40,6 @@ title.Font = Enum.Font.SourceSansBold
 title.TextSize = 15
 title.TextXAlignment = Enum.TextXAlignment.Left
 
--- NÚT X ĐỂ ẨN UI (Nằm góc phải thanh topBar)
 local closeBtn = Instance.new("TextButton", topBar)
 closeBtn.Size = UDim2.new(0, 30, 0, 30)
 closeBtn.Position = UDim2.new(1, -30, 0, 0)
@@ -59,21 +49,18 @@ closeBtn.Text = "X"
 closeBtn.Font = Enum.Font.SourceSansBold
 closeBtn.TextSize = 18
 
--- Gáy sách chứa các Tab lướt (Bên trái)
+-- TABS
 local tabContainer = Instance.new("Frame", main)
 tabContainer.Size = UDim2.new(0, 80, 1, -30)
 tabContainer.Position = UDim2.new(0, 0, 0, 30)
 tabContainer.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
 tabContainer.BorderSizePixel = 0
 
--- Trang sách chứa nội dung (Bên phải)
 local pageContainer = Instance.new("Frame", main)
 pageContainer.Size = UDim2.new(1, -90, 1, -40)
 pageContainer.Position = UDim2.new(0, 85, 0, 35)
-pageContainer.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-pageContainer.BorderSizePixel = 0
+pageContainer.BackgroundTransparency = 1
 
--- Các trang nội dung tương ứng khi lướt tab
 local pages = {}
 local tabNames = {"Home", "Game", "Ui", "Rifery"}
 
@@ -82,13 +69,9 @@ for i, name in ipairs(tabNames) do
     tabBtn.Size = UDim2.new(1, -10, 0, 30)
     tabBtn.Position = UDim2.new(0, 5, 0, (i-1) * 35 + 5)
     tabBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    tabBtn.TextColor3 = Color3.fromRGB(230, 230, 230)
+    tabBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     tabBtn.Text = name
-    tabBtn.Font = Enum.Font.SourceSansBold
-    tabBtn.TextSize = 13
-    
-    local btnCorner = Instance.new("UICorner", tabBtn)
-    btnCorner.CornerRadius = UDim.new(0, 4)
+    Instance.new("UICorner", tabBtn).CornerRadius = UDim.new(0, 4)
     
     local page = Instance.new("Frame", pageContainer)
     page.Size = UDim2.new(1, 0, 1, 0)
@@ -102,45 +85,40 @@ for i, name in ipairs(tabNames) do
     end)
 end
 
--- [NỘI DUNG TRANG HOME]
-local homeTxt = Instance.new("TextLabel", pages["Home"])
-homeTxt.Size = UDim2.new(1, 0, 1, 0)
-homeTxt.BackgroundTransparency = 1
-homeTxt.TextColor3 = Color3.fromRGB(255, 255, 255)
-homeTxt.Text = "Trang Home"
-homeTxt.Font = Enum.Font.SourceSansBold
-homeTxt.TextSize = 16
+-- TÍNH NĂNG FLY TRONG TAB GAME
+local speedInput = Instance.new("TextBox", pages["Game"])
+speedInput.Size = UDim2.new(0, 150, 0, 30)
+speedInput.Position = UDim2.new(0.5, -75, 0.2, 0)
+speedInput.Text = "50"
+local flyBtn = Instance.new("TextButton", pages["Game"])
+flyBtn.Size = UDim2.new(0, 100, 0, 30)
+flyBtn.Position = UDim2.new(0.5, -105, 0.6, 0)
+flyBtn.Text = "Fly"
+flyBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+local unflyBtn = Instance.new("TextButton", pages["Game"])
+unflyBtn.Size = UDim2.new(0, 100, 0, 30)
+unflyBtn.Position = UDim2.new(0.5, 5, 0.6, 0)
+unflyBtn.Text = "Unfly"
+unflyBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
 
+local flying = false
+flyBtn.MouseButton1Click:Connect(function()
+    flying = true
+    local hum = game.Players.LocalPlayer.Character.Humanoid
+    local speed = tonumber(speedInput.Text) or 50
+    local bv = Instance.new("BodyVelocity", game.Players.LocalPlayer.Character.HumanoidRootPart)
+    bv.Velocity = Vector3.new(0, speed, 0)
+    bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+    spawn(function()
+        while flying do wait()
+            bv.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector * speed
+        end
+        bv:Destroy()
+    end)
+end)
 
--- ==========================================================
--- [NỘI DUNG TRANG GAME - TÍNH NĂNG FLY CHỈNH TỐC ĐỘ]
-local gamePage = pages["Game"]
+unflyBtn.MouseButton1Click:Connect(function() flying = false end)
 
--- Ô Nhập Tốc Độ Bay (TextBox)
-local speedInput = Instance.new("TextBox", gamePage)
-speedInput.Size = UDim2.new(0, 200, 0, 30)
-speedInput.Position = UDim2.new(0.5, -100, 0.15, 0)
-speedInput.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-speedInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-speedInput.Text = "50" -- Tốc độ bay mặc định
-speedInput.PlaceholderText = "Nhập tốc độ bay..."
-speedInput.Font = Enum.Font.SourceSans
-speedInput.TextSize = 14
-
-local speedCorner = Instance.new("UICorner", speedInput)
-speedCorner.CornerRadius = UDim.new(0, 4)
-
-local speedLabel = Instance.new("TextLabel", gamePage)
-speedLabel.Size = UDim2.new(0, 200, 0, 20)
-speedLabel.Position = UDim2.new(0.5, -100, 0, 0)
-speedLabel.BackgroundTransparency = 1
-speedLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-speedLabel.Text = "Tốc độ bay (Speed):"
-speedLabel.Font = Enum.Font.SourceSansBold
-speedLabel.TextSize = 12
-
--- Nút Bật Bay (Fly Button)
-local flyBtn = Instance.new("TextButton", gamePage)
-flyBtn.Size = UDim2.new(0, 95, 0, 35)
-flyBtn.Position = UDim2.new(0.5, -100, 0.45, 0)
- 
+-- ĐIỀU KHIỂN
+openBtn.MouseButton1Click:Connect(function() main.Visible = true end)
+closeBtn.MouseButton1Click:Connect(function() main.Visible = false end)
