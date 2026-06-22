@@ -1,9 +1,9 @@
 local sg = Instance.new("ScreenGui", game.CoreGui)
 
--- 1. NÚT OPEN HÌNH TRÒN NHỎ
+-- 1. NÚT OPEN HÌNH TRÒN NHỎ (Để bấm HIỆN UI)
 local openBtn = Instance.new("TextButton", sg)
 openBtn.Size = UDim2.new(0, 45, 0, 45)
-openBtn.Position = UDim2.new(0, 15, 0, 55) -- Dịch xuống một chút tránh đè nút Roblox
+openBtn.Position = UDim2.new(0, 15, 0, 55) -- Vị trí góc trái, né nút mặc định của Roblox
 openBtn.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 openBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 openBtn.Text = "Open"
@@ -27,13 +27,13 @@ main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 main.BorderSizePixel = 0
 main.Active = true
 main.Draggable = true
-main.Visible = true 
+main.Visible = true -- Mặc định ban đầu mới chạy sẽ hiện
 
 local mainStroke = Instance.new("UIStroke", main)
 mainStroke.Color = Color3.fromRGB(40, 40, 40)
 mainStroke.Thickness = 1
 
--- Thanh trên cùng (Màu đen - Chứa tên góc trái và nút X góc phải)
+-- Thanh trên cùng (Chứa tên bên trái và dấu X bên phải)
 local topBar = Instance.new("Frame", main)
 topBar.Size = UDim2.new(1, 0, 0, 30)
 topBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -49,12 +49,12 @@ title.Font = Enum.Font.SourceSansBold
 title.TextSize = 15
 title.TextXAlignment = Enum.TextXAlignment.Left
 
--- NÚT X THOÁT UI BÊN GÓC PHẢI
+-- NÚT X ĐỂ ẨN UI (Nằm góc phải thanh topBar)
 local closeBtn = Instance.new("TextButton", topBar)
 closeBtn.Size = UDim2.new(0, 30, 0, 30)
-closeBtn.Position = UDim2.new(1, -30, 0, 0) -- Ép sát lề phải
+closeBtn.Position = UDim2.new(1, -30, 0, 0) -- Ép sát góc phải
 closeBtn.BackgroundTransparency = 1
-closeBtn.TextColor3 = Color3.fromRGB(255, 50, 50) -- Màu đỏ cho nổi bật
+closeBtn.TextColor3 = Color3.fromRGB(255, 50, 50) -- Màu đỏ chữ X
 closeBtn.Text = "X"
 closeBtn.Font = Enum.Font.SourceSansBold
 closeBtn.TextSize = 18
@@ -102,7 +102,7 @@ for i, name in ipairs(tabNames) do
     end)
 end
 
--- [Nội dung hiển thị mặc định của các trang]
+-- Nội dung hiển thị chữ mẫu ở trang Home
 local homeTxt = Instance.new("TextLabel", pages["Home"])
 homeTxt.Size = UDim2.new(1, 0, 1, 0)
 homeTxt.BackgroundTransparency = 1
@@ -111,12 +111,17 @@ homeTxt.Text = "Trang Home"
 homeTxt.Font = Enum.Font.SourceSansBold
 homeTxt.TextSize = 16
 
--- 3. CƠ CHẾ BẤM OPEN THÌ UI TẮT / ẨN HIỆN
+-- ==========================================
+-- CƠ CHẾ ĐIỀU KHIỂN ĐÚNG Ý BẠN:
+
+-- 1. ẤN OPEN THÌ HIỆN UI
 openBtn.MouseButton1Click:Connect(function()
-    main.Visible = not main.Visible
+    main.Visible = true
 end)
 
--- 4. CƠ CHẾ BẤM NÚT X THÌ XÓA HOÀN TOÀN UI
+-- 2. ẤN DẤU X THÌ ẨN UI
 closeBtn.MouseButton1Click:Connect(function()
-    sg:Destroy()
+    main.Visible = false
 end)
+-- ==========================================
+
