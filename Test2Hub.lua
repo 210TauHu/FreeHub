@@ -1,48 +1,54 @@
-qlocal ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-ScreenGui.Name = "TauHuLoader"
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "VisualEffect"
 ScreenGui.IgnoreGuiInset = true
 
--- Khung nền chứa ảnh
-local MainFrame = Instance.new("Frame", ScreenGui)
-MainFrame.Size = UDim2.new(0, 500, 0, 300)
-MainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
-MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 20)
+-- Hàm tạo frame phủ màn hình
+local function createOverlay(color)
+    local f = Instance.new("Frame", ScreenGui)
+    f.Size = UDim2.new(1, 0, 1, 0)
+    f.BackgroundColor3 = color
+    f.Transparency = 1
+    return f
+end
 
-local BgImage = Instance.new("ImageLabel", MainFrame)
-BgImage.Size = UDim2.new(1, 0, 1, 0)
-BgImage.Image = "rbxassetid://85494695213917"
-BgImage.BackgroundTransparency = 1
+-- 1. Hiệu ứng nhấp nháy đen trắng (2-3 giây)
+local white = createOverlay(Color3.new(1, 1, 1))
+local black = createOverlay(Color3.new(0, 0, 0))
 
--- Thông báo ở góc dưới cùng bên phải màn hình
-local LoadingLabel = Instance.new("TextLabel", ScreenGui)
-LoadingLabel.Size = UDim2.new(0, 200, 0, 50)
-LoadingLabel.Position = UDim2.new(1, -210, 1, -60)
-LoadingLabel.BackgroundTransparency = 1
-LoadingLabel.Text = "Tau Hu Đang Khởi Động"
-LoadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-LoadingLabel.Font = Enum.Font.GothamBold
+for i = 1, 6 do
+    white.Transparency = (i % 2 == 0) and 0 or 1
+    black.Transparency = (i % 2 ~= 0) and 0 or 1
+    wait(0.4)
+end
+white.Transparency = 1
+black.Transparency = 1
 
--- Nút (Căn giữa bảng)
-local ContinueBtn = Instance.new("TextButton", MainFrame)
-ContinueBtn.Size = UDim2.new(0, 150, 0, 50)
-ContinueBtn.Position = UDim2.new(0.35, 0, 0.6, 0)
-ContinueBtn.Text = "Continue"
-ContinueBtn.BackgroundColor3 = Color3.fromRGB(75, 181, 67)
-ContinueBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-ContinueBtn.Font = Enum.Font.GothamBold
-Instance.new("UICorner", ContinueBtn).CornerRadius = UDim.new(0, 10)
+-- 2. Nửa đen nửa trắng
+local halfWhite = Instance.new("Frame", ScreenGui)
+halfWhite.Size = UDim2.new(0.5, 0, 1, 0)
+halfWhite.BackgroundColor3 = Color3.new(1, 1, 1)
 
-local CancelBtn = Instance.new("TextButton", MainFrame)
-CancelBtn.Size = UDim2.new(0, 150, 0, 50)
-CancelBtn.Position = UDim2.new(0.65, 0, 0.6, 0)
-CancelBtn.Text = "Cancel"
-CancelBtn.AnchorPoint = Vector2.new(0.5, 0)
-CancelBtn.BackgroundColor3 = Color3.fromRGB(197, 60, 60)
-CancelBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-CancelBtn.Font = Enum.Font.GothamBold
-Instance.new("UICorner", CancelBtn).CornerRadius = UDim.new(0, 10)
+local halfBlack = Instance.new("Frame", ScreenGui)
+halfBlack.Size = UDim2.new(0.5, 0, 1, 0)
+halfBlack.Position = UDim2.new(0.5, 0, 0, 0)
+halfBlack.BackgroundColor3 = Color3.new(0, 0, 0)
 
--- Logic
-ContinueBtn.MouseButton1Click:Connect(function() game.Players.LocalPlayer:Kick("Cút Đi Thằng Lồn") end)
-CancelBtn.MouseButton1Click:Connect(function() game.Players.LocalPlayer:Kick("Cút đi Con Lồn") end)
+wait(2) -- Giữ trạng thái này 2 giây
+halfWhite:Destroy()
+halfBlack:Destroy()
+
+-- 3. Hiệu ứng chấm đen phủ kín màn hình
+local DotContainer = Instance.new("Frame", ScreenGui)
+DotContainer.Size = UDim2.new(1, 0, 1, 0)
+DotContainer.BackgroundTransparency = 1
+
+spawn(function()
+    for i = 1, 500 do -- Tạo 500 chấm đen
+        local dot = Instance.new("Frame", DotContainer)
+        dot.Size = UDim2.new(0, 4, 0, 4)
+        dot.Position = UDim2.new(math.random(), 0, math.random(), 0)
+        dot.BackgroundColor3 = Color3.new(0, 0, 0)
+        Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
+        wait(0.01) -- Tốc độ xuất hiện của chấm
+    end
+end)
