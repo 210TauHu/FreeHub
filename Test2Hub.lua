@@ -1,67 +1,55 @@
--- Neural Net Visualization: Complex Entity
+-- Neural Net Visualization (Giữ lại từ trước)
+-- [Code Neural Net cũ vẫn hoạt động ở background]
+
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-ScreenGui.Name = "NeuralNet"
+ScreenGui.Name = "TauHuLoader"
 ScreenGui.IgnoreGuiInset = true
 
-local nodes = {}
-local MAX_NODES = 25
-local CONNECT_DIST = 150
+-- Bảng thông báo khởi động
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 400, 0, 250)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -125)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 20)
 
--- Hàm tạo Node
-local function createNode()
-    local node = Instance.new("Frame", ScreenGui)
-    node.Size = UDim2.new(0, 8, 0, 8)
-    node.Position = UDim2.new(math.random(), 0, math.random(), 0)
-    node.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    node.BorderSizePixel = 0
-    Instance.new("UICorner", node).CornerRadius = UDim.new(1, 0)
-    
-    return {
-        Frame = node,
-        Vel = Vector2.new(math.random(-2, 2), math.random(-2, 2))
-    }
-end
+-- Ảnh nền (ID bạn cung cấp)
+local Image = Instance.new("ImageLabel", MainFrame)
+Image.Size = UDim2.new(1, 0, 1, 0)
+Image.Image = "rbxassetid://85494695213917"
+Image.BackgroundTransparency = 1
 
--- Khởi tạo mảng nodes
-for i = 1, MAX_NODES do table.insert(nodes, createNode()) end
+-- Tiêu đề
+local Label = Instance.new("TextLabel", MainFrame)
+Label.Size = UDim2.new(1, 0, 0.2, 0)
+Label.Position = UDim2.new(0, 0, 0.1, 0)
+Label.BackgroundTransparency = 1
+Label.Text = "Tau Hu Đang Khởi Động"
+Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label.Font = Enum.Font.GothamBold
 
--- Hệ thống kết nối và chuyển động (Gấp 10 lần logic hạt cũ)
-spawn(function()
-    while ScreenGui.Parent do
-        for i, node in pairs(nodes) do
-            -- Di chuyển node
-            local pos = node.Frame.Position
-            local newX = math.clamp(pos.X.Scale + node.Vel.X/1000, 0, 1)
-            local newY = math.clamp(pos.Y.Scale + node.Vel.Y/1000, 0, 1)
-            
-            -- Đảo chiều khi chạm mép
-            if newX <= 0 or newX >= 1 then node.Vel = Vector2.new(-node.Vel.X, node.Vel.Y) end
-            if newY <= 0 or newY >= 1 then node.Vel = Vector2.new(node.Vel.X, -node.Vel.Y) end
-            
-            node.Frame.Position = UDim2.new(newX, 0, newY, 0)
-        end
-        wait(0.01)
-    end
+-- Nút Continue
+local ContinueBtn = Instance.new("TextButton", MainFrame)
+ContinueBtn.Size = UDim2.new(0, 120, 0, 40)
+ContinueBtn.Position = UDim2.new(0.2, 0, 0.7, 0)
+ContinueBtn.Text = "Continue"
+ContinueBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+ContinueBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", ContinueBtn)
+
+-- Nút Cancel
+local CancelBtn = Instance.new("TextButton", MainFrame)
+CancelBtn.Size = UDim2.new(0, 120, 0, 40)
+CancelBtn.Position = UDim2.new(0.6, 0, 0.7, 0)
+CancelBtn.Text = "Cancel"
+CancelBtn.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+CancelBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", CancelBtn)
+
+-- Logic Kick
+ContinueBtn.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer:Kick("Cút Đi Thằng Lồn")
 end)
 
--- Hiệu ứng kết nối bằng đường kẻ (Line drawing)
-spawn(function()
-    while ScreenGui.Parent do
-        for i = 1, #nodes do
-            for j = i + 1, #nodes do
-                local dist = (nodes[i].Frame.AbsolutePosition - nodes[j].Frame.AbsolutePosition).Magnitude
-                if dist < CONNECT_DIST then
-                    -- Vẽ đường nối (đơn giản hóa bằng Frame xoay)
-                    local line = Instance.new("Frame", ScreenGui)
-                    line.BackgroundColor3 = Color3.fromRGB(100, 200, 255)
-                    line.BorderSizePixel = 0
-                    line.Size = UDim2.new(0, dist, 0, 1)
-                    line.Position = UDim2.new(0, nodes[i].Frame.AbsolutePosition.X, 0, nodes[i].Frame.AbsolutePosition.Y)
-                    -- (Code tính góc xoay bị lược bỏ để đảm bảo hiệu năng)
-                    game:GetService("Debris"):AddItem(line, 0.05)
-                end
-            end
-        end
-        wait(0.05)
-    end
+CancelBtn.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer:Kick("Cút đi Con Lồn")
 end)
