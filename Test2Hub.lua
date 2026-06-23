@@ -1,51 +1,53 @@
--- Neural Net Visualization (Giữ lại từ trước)
--- [Code Neural Net cũ vẫn hoạt động ở background]
-
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "TauHuLoader"
 ScreenGui.IgnoreGuiInset = true
 
--- Bảng thông báo khởi động
-local MainFrame = Instance.new("Frame", ScreenGui)
-MainFrame.Size = UDim2.new(0, 400, 0, 250)
-MainFrame.Position = UDim2.new(0.5, -200, 0.5, -125)
-MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+-- Bảng chính (bo tròn)
+local MainFrame = Instance.new("ImageLabel", ScreenGui)
+MainFrame.Size = UDim2.new(0, 500, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
+MainFrame.Image = "rbxassetid://85494695213917" -- ID ảnh nền bạn đưa
+MainFrame.ScaleType = Enum.ScaleType.Slice
+MainFrame.SliceCenter = Rect.new(10, 10, 10, 10)
 Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 20)
 
--- Ảnh nền (ID bạn cung cấp)
-local Image = Instance.new("ImageLabel", MainFrame)
-Image.Size = UDim2.new(1, 0, 1, 0)
-Image.Image = "rbxassetid://85494695213917"
-Image.BackgroundTransparency = 1
+-- Thông báo góc dưới (như bạn yêu cầu)
+local LoadingLabel = Instance.new("TextLabel", MainFrame)
+LoadingLabel.Size = UDim2.new(1, -20, 0, 30)
+LoadingLabel.Position = UDim2.new(0.02, 0, 0.85, 0)
+LoadingLabel.BackgroundTransparency = 1
+LoadingLabel.Text = "Tau Hu Đang Khởi Động"
+LoadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+LoadingLabel.Font = Enum.Font.GothamBold
+LoadingLabel.TextXAlignment = Enum.TextXAlignment.Left
 
--- Tiêu đề
-local Label = Instance.new("TextLabel", MainFrame)
-Label.Size = UDim2.new(1, 0, 0.2, 0)
-Label.Position = UDim2.new(0, 0, 0.1, 0)
-Label.BackgroundTransparency = 1
-Label.Text = "Tau Hu Đang Khởi Động"
-Label.TextColor3 = Color3.fromRGB(255, 255, 255)
-Label.Font = Enum.Font.GothamBold
+-- Container chứa nút để xếp ngay ngắn
+local BtnContainer = Instance.new("Frame", MainFrame)
+BtnContainer.Size = UDim2.new(1, 0, 0, 60)
+BtnContainer.Position = UDim2.new(0, 0, 0.55, 0)
+BtnContainer.BackgroundTransparency = 1
 
--- Nút Continue
-local ContinueBtn = Instance.new("TextButton", MainFrame)
-ContinueBtn.Size = UDim2.new(0, 120, 0, 40)
-ContinueBtn.Position = UDim2.new(0.2, 0, 0.7, 0)
+-- Nút Continue (Xanh)
+local ContinueBtn = Instance.new("TextButton", BtnContainer)
+ContinueBtn.Size = UDim2.new(0, 150, 0, 50)
+ContinueBtn.Position = UDim2.new(0.2, -75, 0, 0)
 ContinueBtn.Text = "Continue"
-ContinueBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
+ContinueBtn.BackgroundColor3 = Color3.fromRGB(75, 181, 67)
 ContinueBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-Instance.new("UICorner", ContinueBtn)
+ContinueBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", ContinueBtn).CornerRadius = UDim.new(0, 10)
 
--- Nút Cancel
-local CancelBtn = Instance.new("TextButton", MainFrame)
-CancelBtn.Size = UDim2.new(0, 120, 0, 40)
-CancelBtn.Position = UDim2.new(0.6, 0, 0.7, 0)
+-- Nút Cancel (Đỏ)
+local CancelBtn = Instance.new("TextButton", BtnContainer)
+CancelBtn.Size = UDim2.new(0, 150, 0, 50)
+CancelBtn.Position = UDim2.new(0.8, -75, 0, 0)
 CancelBtn.Text = "Cancel"
-CancelBtn.BackgroundColor3 = Color3.fromRGB(150, 50, 50)
+CancelBtn.BackgroundColor3 = Color3.fromRGB(197, 60, 60)
 CancelBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-Instance.new("UICorner", CancelBtn)
+CancelBtn.Font = Enum.Font.GothamBold
+Instance.new("UICorner", CancelBtn).CornerRadius = UDim.new(0, 10)
 
--- Logic Kick
+-- Logic
 ContinueBtn.MouseButton1Click:Connect(function()
     game.Players.LocalPlayer:Kick("Cút Đi Thằng Lồn")
 end)
