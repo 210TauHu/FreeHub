@@ -1,4 +1,4 @@
-local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+qlocal ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "TauHuLoader"
 ScreenGui.IgnoreGuiInset = true
 
